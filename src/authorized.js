@@ -14,6 +14,10 @@ export const Authorized = () => {
   }
   return (
     <>
+      <div>
+        <img src={user.picture} />
+        <h3>{user.name}</h3>
+      </div>
       <div>Yay! You're authorized.</div>{" "}
       <button onClick={(e) => handleSignOut(e)}>Sign Out</button>
     </>

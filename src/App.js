@@ -25,14 +25,6 @@ function App() {
         <Routes>
           <Route path="login" element={<Auth />} />
           <Route path="home" element={<Authorized />} />
-          {/* <Route
-          path="*"
-          element={
-            <IsAuthorized>
-            <Authorized />
-            </IsAuthorized>
-          }
-        /> */}
         </Routes>
       </Auth>
     </myContext.Provider>
