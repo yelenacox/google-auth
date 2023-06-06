@@ -2,17 +2,20 @@ import logo from "./logo.svg";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Auth from "./Auth";
-import { createContext, useState } from "react";
-import { Authorized } from "./authorized";
+import { createContext, useEffect, useState } from "react";
+import { Authorized } from "./home";
+import jwt_decode from "jwt-decode";
 
-const CLIENT_ID =
-  "993501719558-fr9dkh2v27pjtkke74og1p643apjq6qm.apps.googleusercontent.com";
 export const myContext = createContext();
 
 function App() {
-  const currentUser = JSON.parse(localStorage.getItem("app_user"));
+  const currentUser = localStorage.getItem("app_user")
+    ? localStorage.getItem("app_user")
+    : null;
 
-  const [user, setUser] = useState(currentUser ? currentUser : null);
+  const [user, setUser] = useState(
+    currentUser ? jwt_decode(currentUser) : null
+  );
 
   return (
     <myContext.Provider
