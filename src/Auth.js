@@ -11,10 +11,10 @@ function Auth({ children }) {
   function handleCallbackResponse(response) {
     var gUser = jwt_decode(response.credential);
     setUser(gUser);
-    localStorage.setItem("app_user", JSON.stringify(gUser));
+    localStorage.setItem("app_user", response.credential);
+    console.log("token: ", response.credential);
     navigate("/home");
   }
-
   useEffect(() => {
     if (!!user) {
       redirect("/home");
