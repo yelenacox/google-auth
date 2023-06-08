@@ -3,33 +3,31 @@ import "./App.css";
 import { Route, Routes } from "react-router-dom";
 import Auth from "./Auth";
 import { createContext, useEffect, useState } from "react";
-import { Authorized } from "./home";
+import { Home } from "./home";
 import jwt_decode from "jwt-decode";
 
 export const myContext = createContext();
 
 function App() {
-  const currentUser = localStorage.getItem("app_user")
-    ? localStorage.getItem("app_user")
+  const currentClient = localStorage.getItem("app_client")
+    ? localStorage.getItem("app_client")
     : null;
 
-  const [user, setUser] = useState(
-    currentUser ? jwt_decode(currentUser) : null
-  );
+  const [client, setClient] = useState(currentClient ? currentClient : null);
 
   return (
     <myContext.Provider
       value={{
-        user,
-        setUser,
+        client,
+        setClient,
       }}
     >
-      <Auth>
-        <Routes>
-          <Route path="login" element={<Auth />} />
-          <Route path="home" element={<Authorized />} />
-        </Routes>
-      </Auth>
+      {/* <Auth> */}
+      <Routes>
+        <Route path="*" element={<Auth />} />
+        {/* <Route path="home" element={<Home />} /> */}
+      </Routes>
+      {/* </Auth> */}
     </myContext.Provider>
   );
 }
