@@ -1,9 +1,10 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { Route, Routes } from "react-router-dom";
-import Auth from "./Auth";
+import Login from "./Login";
 import { createContext, useEffect, useState } from "react";
 import { Home } from "./home";
+import Auth from "./Auth";
 import jwt_decode from "jwt-decode";
 
 export const myContext = createContext();
@@ -22,12 +23,12 @@ function App() {
         setClient,
       }}
     >
-      {/* <Auth> */}
-      <Routes>
-        <Route path="*" element={<Auth />} />
-        {/* <Route path="home" element={<Home />} /> */}
-      </Routes>
-      {/* </Auth> */}
+      <Auth>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Home />} />
+        </Routes>
+      </Auth>
     </myContext.Provider>
   );
 }
