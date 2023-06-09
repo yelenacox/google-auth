@@ -5,7 +5,6 @@ import Login from "./Login";
 import { createContext, useEffect, useState } from "react";
 import { Home } from "./home";
 import Auth from "./Auth";
-import jwt_decode from "jwt-decode";
 
 export const myContext = createContext();
 
