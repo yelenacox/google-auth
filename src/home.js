@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export const Home = () => {
   const { client, setClient } = useContext(myContext);
+  const [userInfo, setUserInfo] = useState(null);
   const [data, setData] = useState([]);
   const navigate = useNavigate();
 
@@ -16,9 +17,24 @@ export const Home = () => {
   let existingToken = localStorage.getItem("app_client");
   useEffect(() => {
     if (data.length < 1 && existingToken) {
+      getUserInfo();
       callFHIR();
     }
   }, []);
+
+  const getUserInfo = () => {
+    fetch("https://www.googleapis.com/oauth2/v1/userinfo?alt=json", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/fhir+json; fhirVersion=4.0",
+        Authorization: `Bearer ${existingToken}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((d) => {
+        setUserInfo(d);
+      });
+  };
 
   const callFHIR = () => {
     fetch(
@@ -39,6 +55,7 @@ export const Home = () => {
 
   return (
     <>
+      <div>{userInfo?.email}.</div>{" "}
       <div>{data?.entry?.map((d) => d?.resource?.title)}.</div>{" "}
       <button onClick={(e) => handleSignOut(e)}>Sign Out</button>
     </>
