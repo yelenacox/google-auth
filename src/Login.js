@@ -16,13 +16,15 @@ function Login({ children }) {
     if (existingToken === null) {
       let client = google?.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
-        scope: "https://www.googleapis.com/auth/cloud-platform",
+        scope:
+          "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.profile",
         callback: (tokenResponse) => {
           if (tokenResponse && tokenResponse.access_token) {
             if (
               google.accounts.oauth2.hasGrantedAnyScope(
                 tokenResponse,
-                "https://www.googleapis.com/auth/cloud-platform"
+                "https://www.googleapis.com/auth/cloud-platform",
+                "https://www.googleapis.com/auth/userinfo.profile"
               )
             ) {
               localStorage.setItem(
