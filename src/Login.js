@@ -11,6 +11,8 @@ function Login({ children }) {
 
   let existingToken = localStorage.getItem("app_client");
 
+  const google = window.google;
+
   const callbackResponse = (tokenResponse) => {
     //this only happens if the token response exists and contains an access token
     if (tokenResponse && tokenResponse.access_token) {
@@ -33,13 +35,12 @@ function Login({ children }) {
   };
 
   const handleSignIn = () => {
-    const google = window.google;
     if (existingToken === null) {
       let client = google?.accounts.oauth2.initTokenClient({
         client_id: CLIENT_ID,
         scope:
           "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.profile",
-        callback: callbackResponse(),
+        callback: callbackResponse,
       });
       setLoading(true);
       client.requestAccessToken();
