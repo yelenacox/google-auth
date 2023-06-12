@@ -11,6 +11,27 @@ function Login({ children }) {
 
   let existingToken = localStorage.getItem("app_client");
 
+  const callbackResponse = (tokenResponse) => {
+    //this only happens if the token response exists and contains an access token
+    if (tokenResponse && tokenResponse.access_token) {
+      if (
+        google.accounts.oauth2.hasGrantedAnyScope(
+          tokenResponse,
+          "https://www.googleapis.com/auth/cloud-platform",
+          "https://www.googleapis.com/auth/userinfo.profile"
+        )
+      ) {
+        localStorage.setItem(
+          "app_client",
+          tokenResponse.access_token.toString()
+        );
+        existingToken = tokenResponse;
+      }
+    }
+    setLoading(false);
+    navigate("/");
+  };
+
   const handleSignIn = () => {
     const google = window.google;
     if (existingToken === null) {
@@ -18,25 +39,7 @@ function Login({ children }) {
         client_id: CLIENT_ID,
         scope:
           "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.profile",
-        callback: (tokenResponse) => {
-          if (tokenResponse && tokenResponse.access_token) {
-            if (
-              google.accounts.oauth2.hasGrantedAnyScope(
-                tokenResponse,
-                "https://www.googleapis.com/auth/cloud-platform",
-                "https://www.googleapis.com/auth/userinfo.profile"
-              )
-            ) {
-              localStorage.setItem(
-                "app_client",
-                tokenResponse.access_token.toString()
-              );
-              existingToken = tokenResponse;
-            }
-          }
-          setLoading(false);
-          navigate("/");
-        },
+        callback: callbackResponse(),
       });
       setLoading(true);
       client.requestAccessToken();
